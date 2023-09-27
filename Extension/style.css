@@ -1,0 +1,34 @@
+.container{
+    width: 300px;
+}
+.footer{
+    width: 100%;
+   display: flex;
+   justify-content: space-evenly;
+   background-color: #272627;
+}
+.contenu {
+    font-size: 20px;
+    color: #fffeff;
+    background-color: #393839;
+    height: 80px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}
+.footer i{
+    font-size: 30px;
+    color: #fffeff;
+}
+.entete{
+    background-color: #272627;
+    color: #fffeff;
+    font-size: 16px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
