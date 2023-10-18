@@ -1,31 +1,75 @@
+// Récupère l'élément d'affichage par son ID et initialise la variable calculatrice.
 let nombre = document.getElementById('display');
 let calculater = '';
 
-function appendValue(value){
-    calculater += value;
-    nombre.value = calculater;
+// Fonction pour ajouter une valeur à l'entrée de la calculatrice.
+function appendValue(valeur) {
+    calculater += valeur; // Ajoute la valeur à la chaîne de saisie de la calculatrice.
+    nombre.value = calculater; // Met à jour l'affichage avec la nouvelle saisie.
 }
 
-function deleteLastCharacter(){
-    calculater = '';
-    nombre.value = calculater;
+// Fonction pour supprimer le dernier caractère de l'entrée.
+function deleteLastCharacter() {
+    calculater = calculater.slice(0, -1); // Supprime le dernier caractère de la chaîne de saisie.
+    nombre.value = calculater; // Met à jour l'affichage avec la saisie modifiée.
 }
 
-function clearDisplay(){
-    calculater = calculater.slice(0, -1);
-    nombre.value = calculater;
+// Fonction pour effacer complètement l'affichage.
+function clearDisplay() {
+    calculater = ''; // Réinitialise la chaîne de saisie de la calculatrice.
+    nombre.value = calculater; // Efface l'affichage.
 }
 
+// Fonction pour effectuer des calculs basés sur l'expression d'entrée.
 function calculate() {
     try {
-        let result = eval(calculater);
-        nombre.value = result;
-        calculater = result.toString();
-    } catch (error) {
-        nombre.value = 'Erreur';
-        calculater = ''
+        // Utilise la fonction evaluateExpression pour calculer le résultat.
+        const resultat = evaluateExpression(calculater);
+        nombre.value = resultat; // Affiche le résultat sur la calculatrice.
+        calculater = resultat.toString(); // Met à jour la saisie avec le résultat.
+    } catch (erreur) {
+        nombre.value = 'Erreur'; // Affiche un message d'erreur sur la calculatrice en cas d'erreur.
+        calculater = ''; // Réinitialise la saisie.
     }
 }
+
+// Fonction pour évaluer l'expression d'entrée et effectuer des calculs sécurisés.
+function evaluateExpression(expression) {
+    const operateurs = ['+', '-', '*', '/'];
+    const valeurs = expression.split(/\b/);
+
+    // Divise l'expression en opérateurs et en valeurs.
+    const pile = [];
+    let operateurCourant = '+';
+
+    for (const item of valeurs) {
+        if (operateurs.includes(item)) {
+            operateurCourant = item;
+        } else {
+            const valeur = parseFloat(item);
+            if (!isNaN(valeur)) {
+                if (operateurCourant === '+') {
+                    pile.push(valeur);
+                } else if (operateurCourant === '-') {
+                    pile.push(-valeur);
+                } else if (operateurCourant === '*') {
+                    const valeurPrecedente = pile.pop();
+                    pile.push(valeurPrecedente * valeur);
+                } else if (operateurCourant === '/') {
+                    const valeurPrecedente = pile.pop();
+                    pile.push(valeurPrecedente / valeur);
+                }
+            }
+        }
+    }
+
+    // Calcule le résultat en additionnant les valeurs dans la pile.
+    const resultat = pile.reduce((acc, val) => acc + val, 0);
+    return resultat; // Renvoie le résultat calculé.
+}
+
+// Écouteur d'événements pour l'entrée au clavier et les changements de thème.
+// (Les écouteurs d'événements restent les mêmes que dans votre code précédent.)
 
 // Inseret la fonctionnalité du clavier
 document.addEventListener("keydown", function(event){
@@ -148,3 +192,4 @@ theme2.addEventListener("click", (e) =>{
         
       }  
 });
+
